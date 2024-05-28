@@ -1,0 +1,42 @@
+<!-- Бауэр Артём Александрович 23ВП2 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Доставка еды</title>
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+    
+
+    <main class="main">
+
+        <div class="container login">
+            <h1>Вход</h1>
+            <form action="checkUser.php" method="post">
+                
+                    <label for="">Логин:</label>
+                    <input type="text" name="username" id="" class="form__inp" required>
+                
+                    <label for="">Пароль:</label>
+                    <input type="password" name="pass" id="" class="form__inp" required>
+                
+                <input type="hidden" name="auth" id="" class="" value="auth">
+                <button class="login-btn">Войти</button>
+            </form>
+            <a class="reg" href="register.html">Зарегистрироваться</a>
+        </div>
+        <div class="feedback container hidden unstable">
+
+        </div>
+
+       
+    </main>
+
+    <script src="js/jquery/jquery-3.7.1.min.js"></script>
+    <script src="js/main/login.js"></script>
+
+</body>
+</html>

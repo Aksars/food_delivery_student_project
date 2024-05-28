@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Доставка еды</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/table.css">
+
+</head>
+
+<body>
+    <main class="main">
+        <div class="loading unstable">
+            Идет загрузка ....
+        </div>
+        <div class="project-desc">
+
+            23ВП2 Бауэр А.А. 6 л.р. 3 в.
+
+            Форма заказа доставки еды на дом.
+
+        </div>
+        <div class="orders hidden unstable">
+            <h1 class="orders-title">Заказы компании</h1>
+            <div class="user-block">
+                <div class="user-info">
+                    <span> В системе: </span>
+                    <span class="user-name"></span>
+                </div>
+                <div class="user-actions">
+                    <div class="logout-action">
+                        <button class="logout default-btn">Выйти</button>
+                    </div>
+
+                </div>
+            </div>
+            <div class="table">
+
+            </div>
+
+            <div class="actions">
+                <buttton class="add-order default-btn">Добавить заказ</buttton>
+            </div>
+
+
+        </div>
+        <div class="errors hidden unstable">
+        </div>
+
+    </main>
+
+    <div class="modal-window hidden unstable">
+
+        <div class="modal-window-wrap">
+            <div class="order  ">
+                <h1>Ваш заказ</h1>
+                <form id="order" method="post" action="createOrder.php">
+                    <label for="food">Заказ</label>
+                    <textarea name="food" id="food"></textarea>
+                    <div class="field">
+                        <label for="name_2">Имя</label>
+                        <div class="input-wrap">
+                            <input type="text" name="name" id="name_2" class="form__inp">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="email_2">Почта</label>  
+                        <div class="input-wrap">
+                            <input type="text" name="email" id="email_2" class="form__inp">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="phone_2">Номер телефона</label>
+                        <div class="input-wrap">
+                            <input type="text" name="phone" id="phone_2" class="form__inp" placeholder="+7 (___)-___-__-__">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="address_2">Адрес</label>
+                        <div class="input-wrap">
+                            <input type="text" name="address" id="address_2" class="form__inp">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="city">Город доставки</label>
+                        <div class="input-wrap">
+                            <select name="city" id="city">
+                                <option value=""></option>
+                                <option value="Москва">Москва</option>
+                                <option value="Ленинград">Ленинград</option>
+                                <option value="Сталинград">Сталинград</option>
+                                <option value="Ростов">Ростов</option>
+                            </select>
+                        </div>
+                    </div>  
+                    <div class="input-wrap">
+                        <button class="submit">Заказать</button>
+                        <div class="final-errors"></div>
+                    </div>                 
+                    
+                </form>
+                <div class="close">
+                    <div class="line-1"></div>
+                    <div class="line-2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script src="js/jquery.validate.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script> -->
+    <script src="js/jquery.mask.js"></script>
+    <script type="module" src="js/script.js"></script>
+    <script type="module" src="js/orders.js"></script>
+
+</body>
+
+</html>
