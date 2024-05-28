@@ -69,7 +69,7 @@ $(document).ready(() => {
 					type: 'POST',
 					success: function (data) {
 						const orders = JSON.parse(data)
-						insertToTable(orders)
+						drawTable(orders)
 					}
 				});
 			}
@@ -308,7 +308,7 @@ function loadOrders(username) {
 			success: function (data) {
 				const orders = JSON.parse(data)
 				console.log("Заказы", orders)
-				insertToTable(orders)
+				drawTable(orders)
 			}
 		});
 	}, 500)
@@ -345,7 +345,7 @@ function showLoading() {
 }
 
 
-function insertToTable(items) {
+function drawTable(items) {
 
 	// собираем заголовочные ячейки таблицы
 	// let headers = ""	
@@ -396,80 +396,88 @@ function insertToTable(items) {
 	const tableBlock = $(".table")
 	tableBlock.html(table)
 	//console.log(table)
+
+	enableTableSort()
+
+
 }
 
 
 
+function enableTableSort() {
 
-// свойства таблицы
-var properties = [
-	'name',
-	'wins',
-	'draws',
-	'losses',
-	'total',
-];
+	// свойства таблицы которые мы умеем сортировать
+	var properties = [
+		'order_id_t',
+		'name_t',
+		'email_t',
+		'phone_t',
+		'address_t',
+		'city_t',
+	];
 
-// сортировка таблицы по клику
-$.each(properties, function (i, val) {
 
-	var orderClass = '';
+	// сортировка таблицы по клику
+	$.each(properties, function (i, val) {
 
-	$("#" + val).click(function (e) {
-		e.preventDefault();
-		$('.filter__link.filter__link--active').not(this).removeClass('filter__link--active');
-		$(this).toggleClass('filter__link--active');
-		$('.filter__link').removeClass('asc desc');
+		var orderClass = '';
 
-		if (orderClass == 'desc' || orderClass == '') {
-			$(this).addClass('asc');
-			orderClass = 'asc';
-		} else {
-			$(this).addClass('desc');
-			orderClass = 'desc';
-		}
+		$("#" + val).click(function (e) {
+			e.preventDefault();
+			$('.filter__link.filter__link--active').not(this).removeClass('filter__link--active');
+			$(this).toggleClass('filter__link--active');
+			$('.filter__link').removeClass('asc desc');
 
-		var parent = $(this).closest('.header__item');
-		var index = $(".header__item").index(parent);
-		var $table = $('.table-content');
-		var rows = $table.find('.table-row').get();
-		var isSelected = $(this).hasClass('filter__link--active');
-		var isNumber = $(this).hasClass('filter__link--number');
-
-		rows.sort(function (a, b) {
-
-			var x = $(a).find('.table-data').eq(index).text();
-			var y = $(b).find('.table-data').eq(index).text();
-
-			if (isNumber == true) {
-
-				if (isSelected) {
-					return x - y;
-				} else {
-					return y - x;
-				}
-
+			if (orderClass == 'desc' || orderClass == '') {
+				$(this).addClass('asc');
+				orderClass = 'asc';
 			} else {
-
-				if (isSelected) {
-					if (x < y) return -1;
-					if (x > y) return 1;
-					return 0;
-				} else {
-					if (x > y) return -1;
-					if (x < y) return 1;
-					return 0;
-				}
+				$(this).addClass('desc');
+				orderClass = 'desc';
 			}
+
+			var parent = $(this).closest('.header__item');
+			var index = $(".header__item").index(parent);
+			var $table = $('.table-content');
+			var rows = $table.find('.table-row').get();
+			var isSelected = $(this).hasClass('filter__link--active');
+			var isNumber = $(this).hasClass('filter__link--number');
+
+			rows.sort(function (a, b) {
+
+				var x = $(a).find('.table-data').eq(index).text();
+				var y = $(b).find('.table-data').eq(index).text();
+
+				if (isNumber == true) {
+
+					if (isSelected) {
+						return x - y;
+					} else {
+						return y - x;
+					}
+
+				} else {
+
+					if (isSelected) {
+						if (x < y) return -1;
+						if (x > y) return 1;
+						return 0;
+					} else {
+						if (x > y) return -1;
+						if (x < y) return 1;
+						return 0;
+					}
+				}
+			});
+
+			$.each(rows, function (index, row) {
+				$table.append(row);
+			});
+
+			return false;
 		});
 
-		$.each(rows, function (index, row) {
-			$table.append(row);
-		});
-
-		return false;
 	});
 
-});
-
+}
 

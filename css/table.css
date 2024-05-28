@@ -32,7 +32,7 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   width: 100%;
   background: var(--black);
-  padding: 18px 0;
+  /*! padding: 18px 0; */
 }
 
 .table-row {
@@ -52,7 +52,19 @@ h1, h2, h3, h4, h5, h6 {
 
 .header__item {
   text-transform: uppercase;
+  padding: 1.23em 0;  
+  transition: 0.2s;
+  padding-top: 1.3em;
+  user-select: none;
 }
+.header__item:not(:last-child) { 
+  cursor: pointer;
+}
+
+.header__item:not(:last-child):hover {
+  background-color: #ffffff12;
+}
+
 
 .filter__link {
   color: white;
@@ -61,15 +73,16 @@ h1, h2, h3, h4, h5, h6 {
   display: inline-block;
   padding-left: 24px;
   padding-right: 24px;
+  position: relative;
 }
 .filter__link::after {
   content: "";
   position: absolute;
-  right: -18px;
-  color: white;
+  left: 50%;
+  color: #ffffff91;
   font-size: 12px;
-  top: 50%;
-  transform: translateY(-50%);
+  top: -0.1em;
+  transform: translate(-50%, -100%);
 }
 .filter__link.desc::after {
   content: "(desc)";
