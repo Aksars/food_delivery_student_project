@@ -10,22 +10,53 @@
     
 
     <main class="main">
+        <div class="project-desc">
+
+            23ВП2 Бауэр А.А. 6 л.р. 3 в.
+
+            Форма заказа доставки еды на дом.
+
+        </div>
         <div class="container register">
             <h1>Регистрация</h1>
-            <form action="createUser.php" method="post">
-                <div class="form__cont">
-                    <label for="">Логин:</label>
-                    <input type="text" name="username" id="" class="form__inp" required>
-                </div>
-                <div class="form__cont">
-                    <label for="">Пароль:</label>
-                    <input type="text" name="pass" id="" class="form__inp" required>
-                </div>
-                <button>Зарегестрироваться</button>
+            <form action="" method="post">
+               
+               
+                    <label for="username">Логин:</label>
+                    <div class="input-wrap">
+                        <input type="text" name="username" id="username" class="form__inp" required>
+                    </div>
+                          
+                    
+              
+                    <label for="pass">Пароль:</label>
+                    <div class="input-wrap">
+                        <input type="password" name="pass" id="pass" class="form__inp" required>
+                    </div>
+             
+
+               
+                    <label for="pass_verify">Подтверждение пароля:</label>
+                    <div class="input-wrap">
+                        <input type="password" name="pass_verify" id="pass_verify" class="form__inp" required>
+                    </div>
+                   
+
+                <button class="login-btn">Зарегестрироваться</button>
+                <a class="reg" href="index.html">Войти</a>
             </form>           
         </div>
+
+        <div class="feedback container hidden unstable">
+
+        </div>
+
+
     </main>
 
-    <script type="module" src="css/script.js"></script>
+    <script src="js/jquery/jquery-3.7.1.min.js"></script>
+    <script src="js/jquery/jquery.validate.min.js"></script>
+    <script src="js/main/register.js"></script>
+   
 </body>
 </html>

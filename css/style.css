@@ -11,8 +11,10 @@ body {
     --black: #3c3c3c;
     background-color: var(--main-color);
     --main-color-bold: rgb(124, 211, 211);
+    --red: #df3d3d;
 
-    --red: #df3d3d
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+   
 }
 
 .main {
@@ -33,6 +35,30 @@ body {
     padding: 2em;
     border-radius: 8px;
     color: var(--black);
+  
+}
+.register, .login {
+    margin-top: 5em;
+}
+
+.login .input-wrap input, .register .input-wrap input{   
+    width: 100%;
+  }
+
+  .login .input-wrap , .register .input-wrap {   
+    position: relative;
+  }
+
+  .login .input-wrap label.error, .register .input-wrap label.error {
+	position: absolute;
+	right: 1em;
+	width: 46%;
+	top: 50%;
+	transform: translateY(-50%);
+	text-align: right;
+	font-size: 95%;
+	font-weight: bold;
+	line-height: 1.2;
 }
 
 .reg {
@@ -49,10 +75,17 @@ body {
     width: fit-content;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 1em;
+    margin-top: 1.5em;
     margin-bottom: 1em;
     padding-left: 2em;
     padding-right: 2em;
+    background-color: #8ff7f72b;
+    transition: 0.3s;
+    cursor: pointer;
+}
+.login-btn:hover {   
+    background-color: var(--main-color-bold);
+    color: white;
 }
 
 form {
@@ -143,6 +176,7 @@ form {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
     text-align: center;
+    z-index: 3;
 }
 
 .orders>*:not(.table) {
