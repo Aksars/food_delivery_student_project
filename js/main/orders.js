@@ -6,6 +6,8 @@
 
 // при загрузке страницы 
 $(document).ready(() => {
+	const managerHiddenMark = $("#username_2")
+
 	//запрос на авторизацию 
 	$.ajax({
 		url: 'php/auth/controllers/checkUser.php',
@@ -21,6 +23,7 @@ $(document).ready(() => {
 				loadError(response.message)
 			}
 
+			managerHiddenMark.val(response.username)
 			console.log(response)
 		}
 	});
@@ -57,8 +60,7 @@ $(document).ready(() => {
 			if (checkErrors($("#order")) === 0) {
 				var formData = new FormData($("#order")[0]);
 
-				// закрываем модальное окно
-				closeModal()
+
 
 				// отправляем запрос на создание заказа
 				$.ajax({
@@ -68,8 +70,19 @@ $(document).ready(() => {
 					contentType: false,
 					type: 'POST',
 					success: function (data) {
-						const orders = JSON.parse(data)
-						drawTable(orders)
+
+						const result = JSON.parse(data)
+						if (result.message === "Created") {
+							// получаем заказы и отрисовываем таблицу с заказами
+							const orders = result.orders
+							drawTable(orders)
+
+							// закрываем модальное окно
+							closeModal()
+						}
+						if (result.message === "Already exist") {
+							setFinalError(`Такой заказ уже существует под номером ${result.conflictOrderID}, созданный менеджером ${result.conflictOrderManager}`)
+						}
 					}
 				});
 			}
@@ -98,105 +111,24 @@ $(document).ready(() => {
 	})
 
 
-	$('#name_2').keydown(function (e) {
+	/* ОГРАНИЧЕНИЯ ВВОДА */
 
-		if (e.ctrlKey || e.altKey) {
+	// имена содержат русские или английский буквы любого регистра , пробел, дефис, апостроф
+	restrictInput("name_2", "^[А-яA-z -'`]");
 
-			e.preventDefault();
+	// имейл содержит русские или английский буквы любого регистра, цифры, дефис, нижнее подчеркивание, !, @, точку
+	restrictInput("email_2", "^[0-9А-яA-z-_!@.]");
+	
+	// телефон содержит только цыфры
+	restrictInput("phone_2", "^[0-9]");
 
-		} else {
+	// адрес содержит русские или английский буквы любого регистра, цифры, дефис, нижнее подчеркивание,
+	// !, @, точку, запятую, точку с запятой, пробел
+	restrictInput("address_2", "^[0-9А-яA-z./№, -;]");
 
-			var key = e.keyCode;
-
-			if ((key == 106) || (key == 107) || (key == 16) || (key >= 48 && key <= 57) || (key == 191) || (key == 190) || (key == 61) || (key >= 186 && key <= 188) || (key >= 219 && key <= 222)) {
-
-				e.preventDefault();
-
-			}
-			if (e.shiftKey && ((key == 173))) {
-				e.preventDefault();
-			}
-
-		}
-
-	});
-
-	$('#email_2').keydown(function (e) {
-
-		if (e.altKey) {
-
-			e.preventDefault();
-
-		} else {
-
-			var key = e.keyCode;
-
-			if ((key == 106) || (key == 107) || (key == 111) || (key == 32) || (key == 61) || (key == 191) || (key >= 186 && key <= 188) || (key >= 219 && key <= 222)) {
-
-				e.preventDefault();
-
-			}
-
-		}
-
-	});
-	$('#phone_2').keydown(function (e) {
-
-		if (e.altKey) {
-
-			e.preventDefault();
-
-		} else {
-
-			var key = e.keyCode;
-
-			if ((key >= 65 && key <= 90) || (key == 106) || (key == 107) || (key == 111) || (key == 32) || (key == 61) || (key == 191) || (key >= 186 && key <= 188) || (key >= 219 && key <= 222)) {
-
-				e.preventDefault();
-
-			}
-
-		}
-
-	});
-	$('#address_2').keydown(function (e) {
-
-		if (e.altKey) {
-
-			e.preventDefault();
-
-		} else {
-
-			var key = e.keyCode;
-
-			if ((key == 106) || (key == 107) || (key == 61) || (key >= 186 && key <= 188) || (key >= 219 && key <= 222)) {
-
-				e.preventDefault();
-
-			}
-
-		}
-
-	});
-	$('#food').keydown(function (e) {
-
-		if (e.altKey) {
-
-			e.preventDefault();
-
-		} else {
-
-			var key = e.keyCode;
-
-			if ((key == 106) || (key == 107) || (key == 61) || (key >= 186 && key <= 187) || (key >= 219 && key <= 222)) {
-
-				e.preventDefault();
-
-			}
-
-		}
-
-	});
+	// заказ без ограничений
+	
+	/* ОГРАНИЧЕНИЯ ВВОДА */
 
 
 	[].forEach.call(document.querySelectorAll('#phone_2'), function (input) {
@@ -260,7 +192,7 @@ $(document).ready(() => {
 			},
 			food: {
 				required: true,
-				minlength: 6
+				minlength: 4
 			},
 		},
 		messages: {
@@ -268,7 +200,8 @@ $(document).ready(() => {
 			email: "Пожалуйста, введите корректный email-адрес",
 			phone: "Пожалуйста, введите номер телефона",
 			address: "Пожалуйста, введите корректный адрес (минимум 12 символов)",
-			city: "Пожалуйста, выберите город"
+			city: "Пожалуйста, выберите город",
+			food: "Укажите что именно заказал клиент"
 		}
 	});
 
@@ -299,6 +232,7 @@ function setFinalError(text) {
 function loadOrders(username) {
 	setTimeout(() => {
 		const orders = $(".orders")
+
 		$(".loading").addClass("hidden")
 		orders.removeClass("hidden")
 		orders.find(".user-name").text(username)
@@ -309,6 +243,7 @@ function loadOrders(username) {
 				const orders = JSON.parse(data)
 				console.log("Заказы", orders)
 				drawTable(orders)
+
 			}
 		});
 	}, 500)
@@ -328,78 +263,35 @@ function loadError(errorMsg) {
 
 
 // получаем детали заказа из loadOrder.php
-async function getOrderDetails(orderID){
+async function getOrderDetails(orderID) {
 	return await $.post(
 		'php/orders/controllers/loadOrder.php',
-		{ 
-			order_id: 
-			orderID 
+		{
+			order_id:
+				orderID
 		},
 		function (data) {
-			const food = JSON.parse(data)				
+			const food = JSON.parse(data)
 		}
 	);
-} 
-  
+}
+
 
 // показываем окно с деталями заказа
-function showOrderDetails(orderID){
+function showOrderDetails(orderID) {
 	// текстареа, куда будем записывать список еды
 	const textarea = $(".order-details-modal #food_edit")
 	const title = $(".order-details-modal .order > h1")
 
 	// вызов асинхронной функции которая получает данные с сервера, ждем ее готовность с помощью .then
-	getOrderDetails(orderID).then(order=>{		
+	getOrderDetails(orderID).then(order => {
 		order = JSON.parse(order)
-		console.log(order); 
+		console.log(order);
 		textarea.text(order.food)
-		title.text(`Еда из заказа № `+ order.id)
-		openModal("order-details-modal")	
-	}) 
+		title.text(`Еда из заказа № ` + order.id)
+		openModal("order-details-modal")
+	})
 
-}
-
-// чтоб убрать подергивание при открытии модального окна -- фиксируем ширину body
-function setBodyWidthFix(body){
-	const width = body.outerWidth();
-	const fixedBlocks = $(".fixed-block")
-
-	// применяем фиксацию ширины всем блокам которые "прыгают" при открытии модального окна
-	fixedBlocks.css("width", width+"px")
-	body.css("width", width+"px")	
-}
-
-// функция открытия модального окна
-function openModal(modal_class) {
-	const modal = $(`.modal-window.${modal_class}`)
-	const body = $("body")
-	
-	// фикс на ширину боди
-	setBodyWidthFix(body)
-
-	//запрещаем прокрутку тела страницы
-	body.addClass("stop-scroll")
-	// показываем модальное окно
-	modal.removeClass("hidden")	
-}
-
-// функция закрытия модального окна
-function closeModal() {
-	//закрываем окно
-	const modal = $(".modal-window")
-	modal.addClass("hidden")
-	console.log(modal)
-	
-	const modalTransitionTime = toMS(modal.css("transition-duration"))
-	// разрешаем боди прокручиваться после окончания анимации модального окна
-	setTimeout(()=>{
-		$("body").removeClass("stop-scroll")
-	},modalTransitionTime)
-	
-}
-// функция конвертации записей формата 0.5s/500ms в число 500
-function toMS(s) {
-    return parseFloat(s) * (/\ds$/.test(s) ? 1000 : 1);
 }
 
 function showLoading() {
@@ -417,14 +309,14 @@ function drawTable(items) {
 	// 	headers+= `<div class="header__item"><a id="${key}" class="filter__link" href="#">${key}</a></div>`
 	// }
 	let headers = `
-			<div class="header__item"><a id="order_id_t" class="filter__link" >Номер заказа</a></div>
+			<div class="header__item"><a id="order_id_t" class="filter__link filter__link--number" >№ заказа</a></div>
 			<div class="header__item"><a id="name_t" class="filter__link" >Имя</a></div>
 			<div class="header__item"><a id="email_t" class="filter__link" >Email</a></div>
 			<div class="header__item"><a id="phone_t" class="filter__link" >Телефон</a></div>
 			<div class="header__item"><a id="address_t" class="filter__link" >Адрес</a></div>
 			<div class="header__item"><a id="city_t" class="filter__link" >Город</a></div>
-			<div class="header__item"><a id="city_t" class="filter__link" >Заказ</a></div>
-	
+			<div class="header__item"><a id="manager_t" class="filter__link" >Менеджер</a></div>
+			<div class="header__item"><a id="details_t" class="filter__link" >Заказ</a></div>	
 	`
 
 	// собираем тело таблицы -- ряды
@@ -464,9 +356,9 @@ function drawTable(items) {
 	enableTableSort()
 
 	// при клике на "детали заказа" открываем модальное окно с подробностями
-	$(".order_details").on('click', function() {
-		const orderID = Number( $(this).parent().parent().find("[row-name='id']").text())
-		showOrderDetails(orderID)	
+	$(".order_details").on('click', function () {
+		const orderID = Number($(this).parent().parent().find("[row-name='id']").text())
+		showOrderDetails(orderID)
 	})
 
 }

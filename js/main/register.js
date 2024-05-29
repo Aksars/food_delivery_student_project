@@ -38,19 +38,29 @@ $(document).ready(() => {
             type: 'POST',
             success: function (data) {
                 const response = JSON.parse(data)
-                showMsg(response.message)
+               
 
                 //в случае успешной регистрации перенаправляем на страницу входа
-                if (response.message === "Регистрация успешна")
+                if (response.message === "Регистрация успешна"){                    
                     setTimeout(() => {
                         window.location = "/index.html"
                     }, 1000)
+                    showMsg(response.message)
+                }
+                   
 
+                //если пользователь занят красим красным
+                if (response.message === "Такой пользователь уже существует"){
+                    showMsg(response.message, true)
+                }
+                   
+                    
                 console.log(response)
             }
         });
     })
 
+    // показ сообщений при авторизации/регистрации 
     function showMsg(msg, error = false) {
         feedback.text(msg)
     
@@ -62,5 +72,15 @@ $(document).ready(() => {
             feedback.removeClass("red")
         }, 3000)
     }
+
+    /* ОГРАНИЧЕНИЯ ВВОДА */
+	
+	// логин содержит цифры, буквы английского алфавита в любом регистре, дифис, нижнее подчеркивание
+	restrictInput("username", "^[0-9A-z-_]");
+    
+    // пароль без ограничений по символам
+	
+    /* ОГРАНИЧЕНИЯ ВВОДА */
+
 })
 

@@ -30,16 +30,26 @@ $(document).ready(() => {
         });
     })
 
-
-    function showMsg(msg) {
-        //console.log(data);
+    // показ сообщений при авторизации/регистрации 
+    function showMsg(msg, error = false) {
         feedback.text(msg)
+    
+        error ? feedback.addClass("red") : null;
+    
         feedback.removeClass("hidden")
         setTimeout(() => {
             feedback.addClass("hidden")
+            feedback.removeClass("red")
         }, 3000)
-    
-    
-    
     }
+
+    /* ОГРАНИЧЕНИЯ ВВОДА */
+	
+	// логин содержит цифры, буквы английского алфавита в любом регистре, дифис, нижнее подчеркивание
+	restrictInput("username", "^[0-9A-z-_]");
+	
+    /* ОГРАНИЧЕНИЯ ВВОДА */
 })
+
+
+

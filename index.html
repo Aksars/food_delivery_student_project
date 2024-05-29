@@ -23,11 +23,11 @@
             <h1>Вход</h1>
             <form action="checkUser.php" method="post">
                 
-                    <label for="">Логин:</label>
-                    <input type="text" name="username" id="" class="form__inp" required>
+                    <label for="username">Логин:</label>
+                    <input type="text" name="username" id="username" class="form__inp" required>
                 
-                    <label for="">Пароль:</label>
-                    <input type="password" name="pass" id="" class="form__inp" required>
+                    <label for="pass">Пароль:</label>
+                    <input type="password" name="pass" id="pass" class="form__inp" required>
                 
                 <input type="hidden" name="auth" id="" class="" value="auth">
                 <button class="login-btn">Войти</button>
@@ -43,7 +43,9 @@
 
     <script src="js/jquery/jquery-3.7.1.min.js"></script>
     <script src="js/jquery/jquery.validate.min.js"></script>
+    <script src="js/main/helper.js"></script>
     <script src="js/main/login.js"></script>
+   
 
 </body>
 </html>
