@@ -50,6 +50,10 @@ h1, h2, h3, h4, h5, h6 {
   text-align: center;
 }
 
+.header__item:not(:last-child):hover {
+  background-color: #ffffff12;
+}
+
 .header__item {
   text-transform: uppercase;
   padding: 1.23em 0;  
@@ -61,8 +65,10 @@ h1, h2, h3, h4, h5, h6 {
   cursor: pointer;
 }
 
-.header__item:not(:last-child):hover {
-  background-color: #ffffff12;
+
+
+.table-data:last-child, .header__item:last-child {
+	flex-shrink: 0.1;
 }
 
 

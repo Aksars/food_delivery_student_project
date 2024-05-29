@@ -15,7 +15,7 @@
         <div class="loading unstable">
             Идет загрузка ....
         </div>
-        <div class="project-desc">
+        <div class="project-desc fixed-block">
 
             23ВП2 Бауэр А.А. 6 л.р. 3 в.
 
@@ -51,7 +51,7 @@
 
     </main>
 
-    <div class="modal-window hidden unstable">
+    <div class="modal-window order-modal hidden unstable">
 
         <div class="modal-window-wrap">
             <div class="order  ">
@@ -89,14 +89,14 @@
                             <select name="city" id="city">
                                 <option value=""></option>
                                 <option value="Москва">Москва</option>
-                                <option value="Ленинград">Ленинград</option>
-                                <option value="Сталинград">Сталинград</option>
+                                <option value="Ленинград">Санкт-Петербург</option>
+                                <option value="Сталинград">Воронеж</option>
                                 <option value="Ростов">Ростов</option>
                             </select>
                         </div>
                     </div>  
                     <div class="input-wrap">
-                        <button class="submit">Заказать</button>
+                        <button class="submit default-btn">Заказать</button>
                         <div class="final-errors"></div>
                     </div>                 
                     
@@ -108,6 +108,22 @@
             </div>
         </div>
     </div>
+    <div class="modal-window order-details-modal hidden unstable">
+
+        <div class="modal-window-wrap">
+            <div class="order">
+                <h1>Ваш заказ</h1>
+                <form id="edit_order" method="post" action="">                  
+                    <textarea name="food" id="food_edit"></textarea>                    
+                </form>
+                <div class="close">
+                    <div class="line-1"></div>
+                    <div class="line-2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="js/jquery/jquery-3.7.1.min.js"></script>
     <script src="js/jquery/jquery.validate.min.js"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script> -->

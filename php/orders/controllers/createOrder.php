@@ -1,10 +1,12 @@
 <?php 
 
     //var_dump($_POST);
-    $order = new stdClass(); 
+    
 
     $orders = json_decode(file_get_contents("../data/orders.json"));
     $lastOrderID = 1;
+
+
     foreach ($orders as $order) {
         if ($order->id > $lastOrderID ){
             $lastOrderID = $order->id;
@@ -12,7 +14,10 @@
         else{
         }
     }
-    $order->id = $lastOrderID +1;   
+    
+    $order = new stdClass();
+
+    $order->id = ($lastOrderID +1);   
     $order->name = $_POST["name"];
     $order->email= $_POST["email"];
     $order->phone= $_POST["phone"];

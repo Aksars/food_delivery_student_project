@@ -17,6 +17,10 @@ body {
    
 }
 
+.stop-scroll {
+	overflow: hidden;
+}
+
 .main {
 
     display: flex;
@@ -88,14 +92,14 @@ body {
     color: white;
 }
 
-form {
+form , #order .field{
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 16px;
-
-
+    gap: 1em;
 }
+
+
 
 .feedback {
     font-size: 18px;
@@ -186,6 +190,7 @@ form {
 
 .orders-title {
     padding-top: 1.5em;
+    font-size: 28px;
 }
 
 .modal-window {
@@ -222,6 +227,14 @@ form {
     margin-top: 0.75em;
 }
 
+#order .submit {
+	font-size: 20px;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 0.7em 2em;
+	margin-top: 1.7em;
+}
+
 #order>input,
 #order>select,
 #order>button {
@@ -233,6 +246,7 @@ form {
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 100%;
 }
 
 #food {
@@ -244,6 +258,13 @@ form {
     max-height: 152px;
     min-height: 152px;
 
+}
+
+#food_edit {
+	min-width: 485px;
+	min-height: 225px;
+	max-width: 485px;
+	max-height: 225px;
 }
 
 .line-1,
@@ -297,6 +318,9 @@ form {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-size: 18px;
+    margin-bottom: 0.5em;
+    margin-top: 0.5em;
 }
 
 

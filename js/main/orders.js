@@ -27,7 +27,7 @@ $(document).ready(() => {
 
 	// при клике на добавить заказ открываем модальное окно
 	$(".add-order").on('click', () => {
-		openModal()
+		openModal("order-modal")
 	})
 
 	//при клике на крест закрываем модальное окно
@@ -327,15 +327,79 @@ function loadError(errorMsg) {
 }
 
 
+// получаем детали заказа из loadOrder.php
+async function getOrderDetails(orderID){
+	return await $.post(
+		'php/orders/controllers/loadOrder.php',
+		{ 
+			order_id: 
+			orderID 
+		},
+		function (data) {
+			const food = JSON.parse(data)				
+		}
+	);
+} 
+  
 
-// функции открытия/закрытия модального окна
-function openModal() {
-	const modal = $(".modal-window")
-	modal.removeClass("hidden")
+// показываем окно с деталями заказа
+function showOrderDetails(orderID){
+	// текстареа, куда будем записывать список еды
+	const textarea = $(".order-details-modal #food_edit")
+	const title = $(".order-details-modal .order > h1")
+
+	// вызов асинхронной функции которая получает данные с сервера, ждем ее готовность с помощью .then
+	getOrderDetails(orderID).then(order=>{		
+		order = JSON.parse(order)
+		console.log(order); 
+		textarea.text(order.food)
+		title.text(`Еда из заказа № `+ order.id)
+		openModal("order-details-modal")	
+	}) 
+
 }
+
+// чтоб убрать подергивание при открытии модального окна -- фиксируем ширину body
+function setBodyWidthFix(body){
+	const width = body.outerWidth();
+	const fixedBlocks = $(".fixed-block")
+
+	// применяем фиксацию ширины всем блокам которые "прыгают" при открытии модального окна
+	fixedBlocks.css("width", width+"px")
+	body.css("width", width+"px")	
+}
+
+// функция открытия модального окна
+function openModal(modal_class) {
+	const modal = $(`.modal-window.${modal_class}`)
+	const body = $("body")
+	
+	// фикс на ширину боди
+	setBodyWidthFix(body)
+
+	//запрещаем прокрутку тела страницы
+	body.addClass("stop-scroll")
+	// показываем модальное окно
+	modal.removeClass("hidden")	
+}
+
+// функция закрытия модального окна
 function closeModal() {
+	//закрываем окно
 	const modal = $(".modal-window")
 	modal.addClass("hidden")
+	console.log(modal)
+	
+	const modalTransitionTime = toMS(modal.css("transition-duration"))
+	// разрешаем боди прокручиваться после окончания анимации модального окна
+	setTimeout(()=>{
+		$("body").removeClass("stop-scroll")
+	},modalTransitionTime)
+	
+}
+// функция конвертации записей формата 0.5s/500ms в число 500
+function toMS(s) {
+    return parseFloat(s) * (/\ds$/.test(s) ? 1000 : 1);
 }
 
 function showLoading() {
@@ -372,7 +436,7 @@ function drawTable(items) {
 			if (!(key === "food"))
 				row += `<div class="table-data" row-name="${key}">${value}</div>`
 			else
-				row += `<div class="table-data" row-name="${key}"><button class='default-btn'>Детали заказа</button></div>`
+				row += `<div class="table-data" row-name="${key}"><button class='order_details default-btn'>Детали заказа</button></div>`
 		}
 
 		row = `
@@ -399,6 +463,11 @@ function drawTable(items) {
 
 	enableTableSort()
 
+	// при клике на "детали заказа" открываем модальное окно с подробностями
+	$(".order_details").on('click', function() {
+		const orderID = Number( $(this).parent().parent().find("[row-name='id']").text())
+		showOrderDetails(orderID)	
+	})
 
 }
 
@@ -406,7 +475,7 @@ function drawTable(items) {
 
 function enableTableSort() {
 
-	// свойства таблицы которые мы умеем сортировать
+	// свойства таблицы которые мы хотим сортировать
 	var properties = [
 		'order_id_t',
 		'name_t',
