@@ -39,7 +39,7 @@ $(document).ready(() => {
 	})
 
 	// при клике на модальное окно 
-	$(".modal-window").on('click', (e) => {
+	$(".modal-window").on('mousedown', (e) => {
 		// если цель клика -- пустота вокруг окна -- закрываем его
 		if ($(e.target).is(".modal-window-wrap"))
 			closeModal()
@@ -79,6 +79,9 @@ $(document).ready(() => {
 
 							// закрываем модальное окно
 							closeModal()
+
+							// чистим поля заказа
+							clearOrder()
 						}
 						if (result.message === "Already exist") {
 							setFinalError(`Такой заказ уже существует под номером ${result.conflictOrderID}, созданный менеджером ${result.conflictOrderManager}`)
@@ -90,9 +93,6 @@ $(document).ready(() => {
 				setFinalError("Пожалуйста, заполните поля корректно")
 			}
 		}, 100)
-
-
-
 
 	})
 	$(".logout").on('click', () => {
@@ -114,17 +114,17 @@ $(document).ready(() => {
 	/* ОГРАНИЧЕНИЯ ВВОДА */
 
 	// имена содержат русские или английский буквы любого регистра , пробел, дефис, апостроф
-	restrictInput("name_2", "^[А-яA-z -'`]");
+	restrictInput("name_2", "^[А-яA-z '`ёЁ-]");
 
-	// имейл содержит русские или английский буквы любого регистра, цифры, дефис, нижнее подчеркивание, !, @, точку
-	restrictInput("email_2", "^[0-9А-яA-z-_!@.]");
+	// имейл содержит английские буквы любого регистра, цифры, дефис, нижнее подчеркивание, @, точку
+	restrictInput("email_2", "^[0-9A-z_@.ёЁ-]");
 	
 	// телефон содержит только цыфры
 	restrictInput("phone_2", "^[0-9]");
 
 	// адрес содержит русские или английский буквы любого регистра, цифры, дефис, нижнее подчеркивание,
 	// !, @, точку, запятую, точку с запятой, пробел
-	restrictInput("address_2", "^[0-9А-яA-z./№, -;]");
+	restrictInput("address_2", "^[0-9А-яA-z./№, ;ёЁ-]");
 
 	// заказ без ограничений
 	
@@ -261,6 +261,19 @@ function loadError(errorMsg) {
 	}, 2000)
 }
 
+function clearOrder(){
+	// сбрасываем все содержимое окна заказа
+	$(':input','#order')
+	.not(':button, :submit, :reset, :hidden')
+	.val('')
+	.prop('checked', false)
+	.prop('selected', false);
+
+	// убираем ошибки, если есть
+	$(".final-errors").text("")
+
+}
+
 
 // получаем детали заказа из loadOrder.php
 async function getOrderDetails(orderID) {
@@ -309,7 +322,7 @@ function drawTable(items) {
 	// 	headers+= `<div class="header__item"><a id="${key}" class="filter__link" href="#">${key}</a></div>`
 	// }
 	let headers = `
-			<div class="header__item"><a id="order_id_t" class="filter__link filter__link--number" >№ заказа</a></div>
+			<div class="header__item"><a id="order_id_t" class="filter__link filter__link--number filter__link--active asc" >№ заказа</a></div>
 			<div class="header__item"><a id="name_t" class="filter__link" >Имя</a></div>
 			<div class="header__item"><a id="email_t" class="filter__link" >Email</a></div>
 			<div class="header__item"><a id="phone_t" class="filter__link" >Телефон</a></div>

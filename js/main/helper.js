@@ -10,13 +10,18 @@ function restrictInput(field_id, regex) {
     // input = elClone
 	
     // убираем квадратные скобки из допустимых символов, потому что они считаються разрешенными по умолчанию по какой то причине
-    squareBrakets = /[\]\[]/;;
+    squareBrakets = /[\]\[!%$#^&"\\]/;
 
     // установка ограничения ввода на инпут по регулярному выражению
     regex = new RegExp(regex);
 	input.addEventListener("beforeinput", (event) => {
-		if (event.data != null && ( !regex.test(event.data) || squareBrakets.test(event.data) ))
-			event.preventDefault();
+
+		const braketsCheck = squareBrakets.test(event.data)
+		const regexCheck = !regex.test(event.data)	
+
+		if(event.data != null)
+			if (  regexCheck || braketsCheck )
+				event.preventDefault();
 	})
 }
 
