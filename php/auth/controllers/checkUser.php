@@ -13,7 +13,7 @@ if (isset($_POST['auth'])) {
 
 
     if (isset($_POST['username']) && isset($_POST['pass'])) {
-        if (strlen($_POST['username']) > 3 && strlen($_POST['pass']) > 3) {
+        if (strlen($_POST['username']) > 2 && strlen($_POST['pass']) > 5) {
 
             $username = $_POST['username'];
             $pass = $_POST['pass'];
@@ -24,16 +24,34 @@ if (isset($_POST['auth'])) {
                 $user = json_decode($file);
                 $is_valid = password_verify($pass, $user->pw);
 
+                // вова ввел правильный логин пароль вовы
                 if (!$is_valid) {
                     // throw an error   
                     sendMsg("Вы ввели неправильный логин или пароль");
                 } else {
 
+                    // смотрим текущий токен авторизации
+                    $token_id = isset($_COOKIE['session_token']) ? $_COOKIE['session_token'] : null;
 
+                    if ($token_id) {
+                       
+                        // получаем данные пользователя логин и пароль которого был введен
+                        $token_user = file_get_contents("../tokens/$token_id.json");
+                        $token_user = json_decode($token_user)->user;
+                        
+                        // если сейчас авторизация в куках не того же юзера от которого были введены логин пароль
+                        if($token_user != $user->username )
+                        {
+                            // очищаем сесию в куках
+                            unset($_COOKIE['session_token']); 
+                            setcookie('session_token', '', -1, '/'); 
+                        }
+                    }
 
                     // Check for a session cookie
                     $token_id = isset($_COOKIE['session_token']) ? $_COOKIE['session_token'] : null;
                     if (!$token_id) {
+
                         // Create a token details
                         $expires = time() + (60 * 60 * 24 * 14);
                         $token = '_' . $expires . '_' . bin2hex(openssl_random_pseudo_bytes(60));
@@ -50,6 +68,7 @@ if (isset($_POST['auth'])) {
                         sendMsg("Авторизация успешна", $username);
 
                     } else {
+                        
                         // Get the token details
                         $token = json_decode(file_get_contents('../tokens/' . $token_id . '.json'));
                         // Get the username

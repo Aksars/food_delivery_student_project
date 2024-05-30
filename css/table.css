@@ -66,6 +66,7 @@ h1, h2, h3, h4, h5, h6 {
   padding-top: 1.3em;
   user-select: none;
   width: 100%;
+  white-space: nowrap;
 }
 .header__item:not(:last-child) { 
   cursor: pointer;

@@ -7,6 +7,10 @@ $(document).ready(() => {
     
     form.validate({
         rules: {
+            username: {
+                required: true,
+                minlength: 3,
+            },
             pass: {
                 required: true,
                 minlength: 6,
@@ -16,6 +20,7 @@ $(document).ready(() => {
             }
         },
 		messages: {
+            username: 'Не короче 3 символов',
 			pass: 'Не короче 6 символов',
             pass_verify: 'Пароли не совпадают'
 		}

@@ -160,8 +160,8 @@ form , #order .field{
     width: 70%;
     background-color: white;
     /* padding: 3em; */
-    min-width: 800px;
-    max-width: 1200px;
+    min-width: 1165px;
+    max-width: 1300px;
     box-shadow: 1px 1px 17px #00000026;
     border-radius: 6px;
     gap: 1.5em;
