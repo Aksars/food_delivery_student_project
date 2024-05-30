@@ -374,6 +374,7 @@ function enableTableSort() {
 		'email_t',
 		'phone_t',
 		'address_t',
+		'manager_t',
 		'city_t',
 	];
 
