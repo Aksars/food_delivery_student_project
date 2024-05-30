@@ -42,9 +42,12 @@ if (isset($_POST['auth'])) {
                         // если сейчас авторизация в куках не того же юзера от которого были введены логин пароль
                         if($token_user != $user->username )
                         {
+                            // очищаем сесию в файловой системе                              
+                            unlink('../tokens/' . $_COOKIE['session_token'] . ".json");
+
                             // очищаем сесию в куках
                             unset($_COOKIE['session_token']); 
-                            setcookie('session_token', '', -1, '/'); 
+                            setcookie('session_token', '', -1, '/');                             
                         }
                     }
 
